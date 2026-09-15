@@ -1,0 +1,19 @@
+{
+  "flow_status": "D:\\OneDrive\\UTokyo\\Research\\Workspace\\Output\\ChinaFlowStatusMosaic\\water_ratio_0.40_min_conn_50_perennial_10_perennial_ratio_0.50\\china_flow_status_factor33_water_ratio_0.40_min_conn_50_perennial_10_perennial_ratio_0.50.tif",
+  "cama_parameters": "D:\\OneDrive\\UTokyo\\Research\\Workspace\\Data\\Cama-Flood output\\parameters_glb06.nc",
+  "min_upstream_area_km2": 10000.0,
+  "segment_radius_cells": 2,
+  "catchments": 18741,
+  "water_components": 122924,
+  "confidence_counts": {
+    "high": 15185,
+    "medium": 2479,
+    "low": 1077
+  },
+  "point_status_counts": {
+    "2": 9072,
+    "1": 5508,
+    "0": 4160,
+    "255": 1
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "match_csv": "D:\\OneDrive\\UTokyo\\Research\\Workspace\\Output\\CamaFlowStatusMatch\\water_ratio_0.40_min_conn_50_perennial_10_perennial_ratio_0.50\\cama_flow_status_match_uparea_10000km2.csv",
+  "nodes": 18741,
+  "downstream_edges_inside_filter": 18545,
+  "edge_quality_counts": {
+    "good": 15054,
+    "uncertain": 2183,
+    "poor": 1308
+  },
+  "edge_quality_ratios": {
+    "good": 0.8117551900781882,
+    "uncertain": 0.11771366945268266,
+    "poor": 0.07053114046912914
+  },
+  "median_src_nearest_water_distance_km": 0.3570818323231347,
+  "median_dst_nearest_water_distance_km": 0.356287439293482,
+  "mean_segment_water_ratio": 0.37636915109112795,
+  "same_nearest_component_edges": 15876,
+  "same_nearest_component_ratio": 0.856079805877595,
+  "src_or_dst_component_on_segment_ratio": 0.9425181989754651,
+  "basins_with_at_least_20_edges": 34
+}

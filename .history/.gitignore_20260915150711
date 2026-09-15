@@ -1,0 +1,54 @@
+# Large scientific datasets and model output
+*.nc
+*.nc4
+*.cdf
+*.h5
+*.hdf
+*.hdf4
+*.hdf5
+*.he5
+*.grib
+*.grb
+*.grib2
+*.grb2
+*.zarr/
+*/
+
+# Large binary arrays and analytical datasets
+*.npy
+*.npz
+*.mat
+*.parquet
+*.feather
+*.arrow
+
+# Database files
+*.sqlite
+*.sqlite3
+*.duckdb
+*.mdb
+*.accdb
+
+# Archives and disk images
+*.zip
+*.7z
+*.rar
+*.tar
+*.tgz
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.gz
+*.bz2
+*.xz
+*.zst
+*.iso
+
+# Large video and lossless audio
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.wav
+*.flac
