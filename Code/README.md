@@ -16,9 +16,17 @@ This folder is organized by workflow stage.
   Aggregates JRC seasonality tiles into global flow-status tiles.
 
 - `classify_china_rivers_perennial_status.py`
-  Classifies China HydroRIVERS segments as intermittent or perennial using
-  aggregated flow-status cells, segment buffers, and perennial connectivity
-  from river start to end.
+  Classifies HydroRIVERS segments as perennial or non-perennial using the
+  least-restrictive JRC flow-status mosaic and start-to-end perennial
+  connectivity. It selects uncut segments with `DIS_AV_CMS > 50` by default
+  and writes spatial, tabular, summary, plot, and SQLite outputs. An optional
+  switch adds the perennial-ratio threshold as a second required condition.
+
+- `build_cama_monthly_flow_db.py`
+  Builds a SQLite database of 2019 monthly flow statistics for CaMa-Flood
+  catchments in the existing China-area selection with upstream area above
+  10,000 km2. Statistics are stored to three decimals; modes use daily flows
+  rounded to three decimals first. It does not match catchments to HydroRIVERS.
 
 ## visualization
 

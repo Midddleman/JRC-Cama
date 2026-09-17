@@ -1,0 +1,13 @@
+{
+  "match_csv": "D:\\OneDrive\\UTokyo\\Research\\Workspace\\Output\\CamaFlowStatusMatch\\water_ratio_0.40_min_conn_50_perennial_10_perennial_ratio_0.50\\cama_flow_status_match_uparea_10000km2.csv",
+  "edge_count": 18545,
+  "rule": "Both endpoints within 2 km of water and on the same nearest-water component",
+  "edge_quality_counts": {
+    "good": 15043,
+    "bad": 3502
+  },
+  "edge_quality_ratios": {
+    "good": 0.8111620382852521,
+    "bad": 0.1888379617147479
+  }
+}

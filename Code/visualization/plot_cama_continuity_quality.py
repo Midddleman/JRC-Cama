@@ -47,6 +47,13 @@ DEFAULT_EDGE_CSV = (
     / RUN_LABEL
     / "cama_flow_status_uparea_10000km2_edge_continuity.csv"
 )
+DEFAULT_BINARY_EDGE_CSV = (
+    PROJECT_ROOT
+    / "Output"
+    / "CamaFlowStatusMatch"
+    / RUN_LABEL
+    / "cama_flow_status_uparea_10000km2_binary_edge_continuity.csv"
+)
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "Output" / "CamaFlowStatusMatch" / RUN_LABEL
 
 
@@ -57,8 +64,11 @@ def build_segments(edges):
     ]
 
 
-def plot_quality(flow_status_path, flow_status_png_path, edge_csv, output_path, native_resolution, dpi, basin_id):
+def plot_quality(flow_status_path, flow_status_png_path, edge_csv, output_path, native_resolution, dpi, basin_id, binary):
     edges = pd.read_csv(edge_csv)
+    quality_column = "binary_edge_quality" if binary else "edge_quality"
+    if quality_column not in edges.columns:
+        raise ValueError(f"Missing {quality_column} column in {edge_csv}")
     if basin_id is not None:
         edges = edges.loc[edges["basin_id"] == basin_id].copy()
         if edges.empty:
@@ -76,11 +86,17 @@ def plot_quality(flow_status_path, flow_status_png_path, edge_csv, output_path, 
 
     styles = {
         "good": {"color": "#00843d", "linewidth": 3.0, "alpha": 1.0, "label": "good continuity"},
-        "uncertain": {"color": "#ffb000", "linewidth": 4.0, "alpha": 1.0, "label": "uncertain continuity"},
-        "poor": {"color": "#d7191c", "linewidth": 5.2, "alpha": 1.0, "label": "poor continuity"},
+        "bad" if binary else "uncertain": {
+            "color": "#d7191c" if binary else "#ffb000",
+            "linewidth": 5.2 if binary else 4.0,
+            "alpha": 1.0,
+            "label": "bad continuity" if binary else "uncertain continuity",
+        },
     }
-    for quality in ["good", "uncertain", "poor"]:
-        subset = edges.loc[edges["edge_quality"] == quality]
+    if not binary:
+        styles["poor"] = {"color": "#d7191c", "linewidth": 5.2, "alpha": 1.0, "label": "poor continuity"}
+    for layer, (quality, style) in enumerate(styles.items()):
+        subset = edges.loc[edges[quality_column] == quality]
         if subset.empty:
             continue
         segments = build_segments(subset)
@@ -88,18 +104,18 @@ def plot_quality(flow_status_path, flow_status_png_path, edge_csv, output_path, 
             LineCollection(
                 segments,
                 colors="#ffffff",
-                linewidths=styles[quality]["linewidth"] + 1.8,
+                linewidths=style["linewidth"] + 1.8,
                 alpha=0.82,
-                zorder={"good": 2, "uncertain": 3, "poor": 4}[quality],
+                zorder=2 + layer,
             )
         )
         ax.add_collection(
             LineCollection(
                 segments,
-                colors=styles[quality]["color"],
-                linewidths=styles[quality]["linewidth"],
-                alpha=styles[quality]["alpha"],
-                zorder={"good": 5, "uncertain": 6, "poor": 7}[quality],
+                colors=style["color"],
+                linewidths=style["linewidth"],
+                alpha=style["alpha"],
+                zorder=5 + layer,
             )
         )
 
@@ -115,7 +131,8 @@ def plot_quality(flow_status_path, flow_status_png_path, edge_csv, output_path, 
     ax.set_aspect("equal")
     ax.set_xlabel("Longitude")
     ax.set_ylabel("Latitude")
-    ax.set_title(f"CaMa downstream-link continuity on the 1 km flow-status map\n{title_filter}, edges = {len(edges):,}")
+    mode_label = "binary continuity" if binary else "continuity"
+    ax.set_title(f"CaMa downstream-link {mode_label} on the 1 km flow-status map\n{title_filter}, edges = {len(edges):,}")
     handles = [
         Line2D([0], [0], color=style["color"], linewidth=5.0, label=style["label"])
         for style in styles.values()
@@ -135,14 +152,15 @@ def main():
     parser = argparse.ArgumentParser(description="Plot CaMa downstream-link continuity quality.")
     parser.add_argument("--flow-status", type=Path, default=DEFAULT_FLOW_STATUS)
     parser.add_argument("--flow-status-png", type=Path, default=DEFAULT_FLOW_STATUS_PNG)
-    parser.add_argument("--edge-csv", type=Path, default=DEFAULT_EDGE_CSV)
+    parser.add_argument("--edge-csv", type=Path, default=None)
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--basin-id", type=int, default=None)
+    parser.add_argument("--binary", action="store_true")
     parser.add_argument("--native-resolution", action="store_true")
     parser.add_argument("--dpi", type=int, default=100)
     args = parser.parse_args()
 
-    suffix = "uparea_10000km2_edge_quality"
+    suffix = "uparea_10000km2_binary_edge_quality" if args.binary else "uparea_10000km2_edge_quality"
     if args.basin_id is not None:
         suffix += f"_basin_{args.basin_id}"
     if args.native_resolution and args.basin_id is None:
@@ -152,11 +170,12 @@ def main():
     plot_quality(
         args.flow_status,
         args.flow_status_png,
-        args.edge_csv,
+        args.edge_csv or (DEFAULT_BINARY_EDGE_CSV if args.binary else DEFAULT_EDGE_CSV),
         output_path,
         native_resolution=args.native_resolution,
         dpi=args.dpi,
         basin_id=args.basin_id,
+        binary=args.binary,
     )
     print(f"Saved plot: {output_path}")
 

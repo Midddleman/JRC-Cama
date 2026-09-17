@@ -13,7 +13,7 @@
 *.grb2
 *.zarr/
 *.tif
-
+*.gdbtable
 # Large binary arrays and analytical datasets
 *.npy
 *.npz
@@ -21,7 +21,7 @@
 *.parquet
 *.feather
 *.arrow
-
+.history/
 # Database files
 *.sqlite
 *.sqlite3

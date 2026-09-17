@@ -58,6 +58,15 @@ def edge_quality(row):
     return "poor"
 
 
+def binary_edge_quality(edges):
+    good = (
+        (edges["src_nearest_water_distance_km"] <= 2.0)
+        & (edges["dst_nearest_water_distance_km"] <= 2.0)
+        & edges["same_nearest_component"]
+    )
+    return np.where(good, "good", "bad")
+
+
 def build_edge_table(nodes):
     node_by_id = nodes.set_index("catchment_id", drop=False)
     rows = []
@@ -144,6 +153,8 @@ def main():
     edge_path = args.out_dir / "cama_flow_status_uparea_10000km2_edge_continuity.csv"
     basin_path = args.out_dir / "cama_flow_status_uparea_10000km2_basin_continuity.csv"
     json_path = args.out_dir / "cama_flow_status_uparea_10000km2_continuity_summary.json"
+    binary_edge_path = args.out_dir / "cama_flow_status_uparea_10000km2_binary_edge_continuity.csv"
+    binary_json_path = args.out_dir / "cama_flow_status_uparea_10000km2_binary_continuity_summary.json"
 
     edges.to_csv(edge_path, index=False, encoding="utf-8-sig")
     basin_summary.to_csv(basin_path, index=False, encoding="utf-8-sig")
@@ -169,10 +180,29 @@ def main():
     }
     json_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
 
+    binary_edges = edges.copy()
+    binary_edges["binary_edge_quality"] = binary_edge_quality(binary_edges)
+    binary_edges.to_csv(binary_edge_path, index=False, encoding="utf-8-sig")
+    binary_counts = binary_edges["binary_edge_quality"].value_counts()
+    binary_summary = {
+        "match_csv": str(args.match_csv),
+        "edge_count": int(total_edges),
+        "rule": "Both endpoints within 2 km of water and on the same nearest-water component",
+        "edge_quality_counts": {label: int(binary_counts.get(label, 0)) for label in ("good", "bad")},
+        "edge_quality_ratios": {
+            label: float(binary_counts.get(label, 0) / total_edges) if total_edges else 0.0
+            for label in ("good", "bad")
+        },
+    }
+    binary_json_path.write_text(json.dumps(binary_summary, indent=2, ensure_ascii=False), encoding="utf-8")
+
     print(json.dumps(summary, indent=2, ensure_ascii=False))
+    print(json.dumps(binary_summary, indent=2, ensure_ascii=False))
     print(f"Saved edge continuity: {edge_path}")
     print(f"Saved basin continuity: {basin_path}")
     print(f"Saved summary: {json_path}")
+    print(f"Saved binary edge continuity: {binary_edge_path}")
+    print(f"Saved binary summary: {binary_json_path}")
 
 
 if __name__ == "__main__":
