@@ -1,0 +1,32 @@
+{
+  "settings": {
+    "cama_db": "D:\\OneDrive\\UTokyo\\Research\\Workspace\\Output\\CamaMonthlyFlow\\cama_2019_monthly_uparea_gt_10000km2.sqlite",
+    "hydrorivers_gdb": "D:\\OneDrive\\UTokyo\\Research\\Workspace\\Data\\Google Earth Engine\\HydroRIVERS_v10_as.gdb\\HydroRIVERS_v10_as.gdb",
+    "coverage_km": 5.0,
+    "search_km": 20.0,
+    "candidate_count": 3,
+    "ambiguity_km": 2.0,
+    "ambiguity_ratio": 1.25,
+    "max_topology_hops": 200,
+    "assignment_method": "nearest",
+    "excluded_outside_as_network": 5414,
+    "method": "screen against all as reaches, then match to all as reaches within the search radius; retain only reaches assigned a CaMa point; nearest mode uses the minimum computed geodesic point-to-line distance and preserves close-tie flags; JRC status is not yet classified for the retained network"
+  },
+  "total_cama_points": 18741,
+  "inside_as_network": 13327,
+  "outside_as_network": 5414,
+  "processed_points": 13327,
+  "with_candidate": 13327,
+  "without_candidate": 0,
+  "matched_reaches": 12982,
+  "status_counts": {
+    "candidate": 11420,
+    "ambiguous": 1907
+  },
+  "distance_km_quantiles": {
+    "0.5": 0.14624165600532532,
+    "0.9": 0.648791177050163,
+    "0.95": 1.1113489741840712,
+    "0.99": 2.3899720168230245
+  }
+}

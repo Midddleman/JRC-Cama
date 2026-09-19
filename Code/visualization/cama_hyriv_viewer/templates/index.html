@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>River Reaches and Flow | HydroRIVERS / CaMa / JRC</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><strong>River Reaches &amp; Flow</strong><span>HydroRIVERS / CaMa 2019 / JRC</span></div>
+      <div class="search">
+        <label for="hydro-search">Hydro ID</label>
+        <input id="hydro-search" type="number" inputmode="numeric" placeholder="Reach ID">
+        <button id="search-button" type="button">Find</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="map-panel" aria-label="River network map">
+        <div class="map-toolbar">
+          <div class="layer-controls" role="group" aria-label="Map layers">
+            <label><input id="layer-jrc" type="checkbox" checked> JRC raster</label>
+            <label><input id="layer-network" type="checkbox" checked> All rivers &gt;20</label>
+            <label><input id="layer-reaches" type="checkbox" checked> Matched reaches</label>
+            <label><input id="layer-points" type="checkbox" checked> CaMa points</label>
+          </div>
+          <button id="reset-view" type="button" title="Reset map extent">Full extent</button>
+        </div>
+        <div id="map-wrap">
+          <canvas id="map-canvas" aria-label="Interactive river network map"></canvas>
+          <div id="map-loading">Loading river network and matches...</div>
+          <div id="map-tooltip" hidden></div>
+          <div class="zoom-controls" aria-label="Zoom">
+            <button id="zoom-in" type="button" title="Zoom in">+</button>
+            <button id="zoom-out" type="button" title="Zoom out">-</button>
+          </div>
+        </div>
+        <div class="map-footer">
+          <div class="legend"><span class="line unmatched"></span>Unmatched river <span class="line perennial"></span>Perennial <span class="line intermittent"></span>Non-perennial <span class="line no-water"></span>No JRC water cells <span class="point perennial-point"></span>Perennial catchment <span class="point nonperennial-point"></span>Non-perennial catchment <span class="point unknown-point"></span>Outside JRC</div>
+          <span id="map-count"></span>
+        </div>
+      </section>
+
+      <aside class="detail-panel" aria-label="Reach details">
+        <div class="detail-heading">
+          <div><div class="eyebrow">HYRIV_ID</div><h1 id="reach-id">-</h1></div>
+          <a id="download-link" href="#" hidden>Download CSV</a>
+        </div>
+        <div id="reach-status" class="status-row"></div>
+        <div id="reach-facts" class="facts"></div>
+
+        <div class="section-head"><h2>Catchments</h2><span id="catchment-count"></span></div>
+        <div class="table-wrap">
+          <table id="catchment-table">
+            <thead><tr><th>ID</th><th>Downstream ID</th><th>Match</th><th>Distance</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="section-head chart-head"><h2>Monthly flow, 2019</h2>
+          <label class="metric-label" for="metric-select">Statistic
+            <select id="metric-select">
+              <option value="mean_flow_cms">Mean</option>
+              <option value="min_flow_cms">Minimum</option>
+              <option value="q25_flow_cms">25th percentile</option>
+              <option value="median_flow_cms">Median</option>
+              <option value="q75_flow_cms">75th percentile</option>
+              <option value="max_flow_cms">Maximum</option>
+              <option value="mode_flow_cms">Mode</option>
+            </select>
+          </label>
+        </div>
+        <div id="chart-wrap"><svg id="flow-chart" role="img" aria-label="Monthly flow chart"></svg></div>
+        <div id="chart-legend" class="chart-legend"></div>
+        <div class="section-head"><h2>Monthly statistics</h2><span id="selected-catchment"></span></div>
+        <div class="table-wrap monthly-wrap">
+          <table id="monthly-table">
+            <thead><tr><th>Month</th><th>Min</th><th>25th</th><th>Median</th><th>Mean</th><th>75th</th><th>Max</th><th>Mode</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </aside>
+    </main>
+    <footer class="source-line">CaMa upstream area &gt;10,000 km2 | as-network coverage within 5 km | JRC long-term status (7x7 endpoints) | CaMa monthly flow for 2019 | Provisional matches</footer>
+  </div>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

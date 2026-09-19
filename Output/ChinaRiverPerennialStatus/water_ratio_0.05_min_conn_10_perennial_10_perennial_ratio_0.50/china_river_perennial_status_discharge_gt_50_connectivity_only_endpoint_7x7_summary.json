@@ -1,0 +1,33 @@
+{
+  "settings": {
+    "flow_status": "D:\\OneDrive\\UTokyo\\Research\\Workspace\\Output\\ChinaFlowStatusMosaic\\water_ratio_0.05_min_conn_10_perennial_10_perennial_ratio_0.50\\china_flow_status_factor33_water_ratio_0.05_min_conn_10_perennial_10_perennial_ratio_0.50.tif",
+    "flow_status_png": "D:\\OneDrive\\UTokyo\\Research\\Workspace\\Output\\ChinaFlowStatusMosaic\\water_ratio_0.05_min_conn_10_perennial_10_perennial_ratio_0.50\\china_flow_status_factor33_water_ratio_0.05_min_conn_10_perennial_10_perennial_ratio_0.50.png",
+    "hydrorivers": "D:\\OneDrive\\UTokyo\\Research\\Workspace\\Data\\Google Earth Engine\\HydroRIVERS_v10_as.gdb\\HydroRIVERS_v10_as.gdb",
+    "hydrorivers_layer": "HydroRIVERS_v10_as",
+    "discharge_threshold_cms": 50.0,
+    "buffer_m": 5000.0,
+    "endpoint_radius_cells": 3,
+    "discharge_filter_operator": ">",
+    "perennial_ratio_threshold": 0.5,
+    "require_perennial_ratio": false,
+    "metric_crs": "EPSG:3857",
+    "min_component_cells": 2,
+    "raster_bounds": [
+      70.0,
+      9.996749999999999,
+      140.0095,
+      60.0
+    ],
+    "selected_segment_count": 68413
+  },
+  "total_segments": 68413,
+  "perennial_segments": 36317,
+  "non_perennial_segments": 32096,
+  "no_water_segments": 2217,
+  "perennial_segment_ratio": 0.5308493999678424,
+  "label_counts": {
+    "Perennial_connected": 36317,
+    "Non-perennial_no_connected_path": 29879,
+    "Non-perennial_no_water": 2217
+  }
+}

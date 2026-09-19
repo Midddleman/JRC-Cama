@@ -468,7 +468,7 @@ def main():
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--discharge-threshold-cms", type=float, default=50.0)
     parser.add_argument("--buffer-m", type=float, default=5000.0)
-    parser.add_argument("--endpoint-radius-cells", type=int, default=5)
+    parser.add_argument("--endpoint-radius-cells", type=int, default=3)
     parser.add_argument("--perennial-ratio-threshold", type=float, default=0.5)
     parser.add_argument(
         "--require-perennial-ratio",
@@ -528,6 +528,7 @@ def main():
 
     rule_label = "connectivity_and_ratio" if args.require_perennial_ratio else "connectivity_only"
     output_stem = f"china_river_perennial_status_discharge_gt_{args.discharge_threshold_cms:g}_{rule_label}"
+    output_stem += f"_endpoint_{2 * args.endpoint_radius_cells + 1}x{2 * args.endpoint_radius_cells + 1}"
     geojson_path = args.out_dir / f"{output_stem}.geojson"
     csv_path = args.out_dir / f"{output_stem}.csv"
     json_path = args.out_dir / f"{output_stem}_summary.json"

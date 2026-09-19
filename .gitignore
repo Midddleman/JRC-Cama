@@ -1,3 +1,7 @@
+# Generated Python files
+__pycache__/
+*.pyc
+
 # Large scientific datasets and model output
 *.nc
 *.nc4
@@ -52,3 +56,10 @@
 *.webm
 *.wav
 *.flac
+
+# Read-only data required by the 7x7 CaMa / HydroRIVERS / JRC viewer
+!/Output/CamaHydroRIVERSIntegrated/water_ratio_0.05_min_conn_10_perennial_10_perennial_ratio_0.50/cama_2019_hyriv_jrc_integrated_nearest_endpoint_7x7.sqlite
+!/Output/CamaHydroRIVERSIntegrated/water_ratio_0.05_min_conn_10_perennial_10_perennial_ratio_0.50/hydrorivers_as_dis_gt_20_map.json.gz
+
+# Read-only data required by the direct CaMa / JRC link viewer
+!/Output/CamaJRCDownstreamLinks/water_ratio_0.05_min_conn_10_perennial_10_perennial_ratio_0.50/cama_2019_jrc_links_corridor_5km.sqlite

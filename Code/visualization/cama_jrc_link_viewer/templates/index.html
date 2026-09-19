@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CaMa Downstream Links | JRC</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><strong>CaMa Downstream Links</strong><span>CaMa-Flood 2019 / JRC</span></div>
+      <div class="search">
+        <label for="catchment-search">Catchment ID</label>
+        <input id="catchment-search" type="number" inputmode="numeric" placeholder="Catchment ID">
+        <button id="search-button" type="button">Find</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="map-panel" aria-label="CaMa downstream link map">
+        <div class="map-toolbar">
+          <div class="layer-controls" role="group" aria-label="Map layers">
+            <label><input id="layer-jrc" type="checkbox" checked> JRC raster</label>
+            <label><input id="layer-links" type="checkbox" checked> Links</label>
+            <label><input id="layer-points" type="checkbox" checked> CaMa points</label>
+          </div>
+          <button id="reset-view" type="button" title="Reset map extent">Full extent</button>
+        </div>
+        <div class="drawing-toolbar" role="toolbar" aria-label="Map drawing tools">
+          <div class="drawing-modes" role="group" aria-label="Map mode">
+            <button id="mode-pan" type="button" aria-pressed="true" title="Pan map and select catchments">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 4 7.07 17 2.51-7.39L21 11.07z"/></svg><span>Pan</span>
+            </button>
+            <button id="mode-draw" type="button" aria-pressed="false" title="Draw on map">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m16 5 3 3M4 20l4-.8L20 7.2 16.8 4 4.8 16z"/></svg><span>Draw</span>
+            </button>
+          </div>
+          <div class="pen-colors" role="group" aria-label="Pen color">
+            <button type="button" class="pen-swatch" data-color="#163f39" aria-label="Dark green pen" title="Dark green pen" aria-pressed="true"></button>
+            <button type="button" class="pen-swatch" data-color="#d34f45" aria-label="Red pen" title="Red pen" aria-pressed="false"></button>
+            <button type="button" class="pen-swatch" data-color="#efb43b" aria-label="Yellow pen" title="Yellow pen" aria-pressed="false"></button>
+            <button type="button" class="pen-swatch" data-color="#ffffff" aria-label="White pen" title="White pen" aria-pressed="false"></button>
+          </div>
+          <label class="pen-size" for="pen-size">Size <input id="pen-size" type="range" min="2" max="14" step="1" value="4"><output id="pen-size-value" for="pen-size">4 px</output></label>
+          <div class="drawing-actions" role="group" aria-label="Drawing actions">
+            <button id="draw-undo" type="button" title="Undo last stroke" aria-label="Undo last stroke" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5M4 9h10a6 6 0 0 1 0 12h-2"/></svg></button>
+            <button id="draw-clear" type="button" title="Clear all strokes" aria-label="Clear all strokes" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg></button>
+            <button id="draw-save" type="button" title="Download annotated map PNG" aria-label="Download annotated map PNG"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m4-5 5 5 5-5M12 15V3"/></svg></button>
+          </div>
+        </div>
+        <div id="map-wrap">
+          <canvas id="map-canvas" aria-label="Interactive CaMa link map"></canvas>
+          <div id="map-loading">Loading links...</div>
+          <div id="map-tooltip" hidden></div>
+          <div class="zoom-controls" aria-label="Zoom">
+            <button id="zoom-in" type="button" title="Zoom in">+</button>
+            <button id="zoom-out" type="button" title="Zoom out">-</button>
+          </div>
+        </div>
+        <div class="map-footer">
+          <div class="legend">
+            <span class="line perennial"></span>Perennial link
+            <span class="line intermittent"></span>Non-perennial link
+            <span class="line no-water"></span>Unresolved link
+            <span class="point perennial-point"></span>Perennial catchment
+            <span class="point nonperennial-point"></span>Non-perennial catchment
+            <span class="point unknown-point"></span>Unresolved catchment
+          </div>
+          <span id="map-count"></span>
+        </div>
+      </section>
+
+      <aside class="detail-panel" aria-label="Catchment link details">
+        <div class="detail-heading">
+          <div><div class="eyebrow">CATCHMENT ID</div><h1 id="catchment-id">-</h1></div>
+          <a id="download-link" href="#" hidden>Download CSV</a>
+        </div>
+        <div id="link-status" class="status-row"></div>
+        <div id="link-facts" class="facts"></div>
+
+        <div class="section-head"><h2>CaMa channel geometry</h2></div>
+        <div id="channel-facts" class="facts"></div>
+        <svg id="channel-section" viewBox="0 0 420 200" role="img" aria-label="Schematic CaMa channel cross-section"></svg>
+        <p id="channel-reference" class="section-note"></p>
+        <p class="section-note">Comparative schematic, not true aspect ratio. Depth uses CaMa's static river_height (bank-height) parameter, not measured bathymetry or daily water depth.</p>
+
+        <div class="section-head chart-head"><h2>Monthly flow, 2019</h2>
+          <label class="metric-label" for="metric-select">Statistic
+            <select id="metric-select">
+              <option value="mean_flow_cms">Mean</option>
+              <option value="min_flow_cms">Minimum</option>
+              <option value="q25_flow_cms">25th percentile</option>
+              <option value="median_flow_cms">Median</option>
+              <option value="q75_flow_cms">75th percentile</option>
+              <option value="max_flow_cms">Maximum</option>
+              <option value="mode_flow_cms">Mode</option>
+            </select>
+          </label>
+        </div>
+        <div id="chart-wrap"><svg id="flow-chart" role="img" aria-label="Monthly flow chart"></svg></div>
+        <div class="section-head"><h2>Monthly statistics</h2><span id="flow-unit">m3/s</span></div>
+        <div class="table-wrap monthly-wrap">
+          <table id="monthly-table">
+            <thead><tr><th>Month</th><th>Min</th><th>25th</th><th>Median</th><th>Mean</th><th>75th</th><th>Max</th><th>Mode</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </aside>
+    </main>
+    <footer class="source-line">CaMa upstream area &gt;10,000 km2 | direct downstream links | 5 km corridor half-width | JRC long-term status | CaMa monthly flow for 2019</footer>
+  </div>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

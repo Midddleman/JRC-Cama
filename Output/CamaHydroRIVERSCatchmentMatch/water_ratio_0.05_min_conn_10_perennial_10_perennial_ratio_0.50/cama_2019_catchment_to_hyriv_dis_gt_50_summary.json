@@ -1,0 +1,31 @@
+{
+  "settings": {
+    "cama_db": "D:\\OneDrive\\UTokyo\\Research\\Workspace\\Output\\CamaMonthlyFlow\\cama_2019_monthly_uparea_gt_10000km2.sqlite",
+    "river_db": "D:\\OneDrive\\UTokyo\\Research\\Workspace\\Output\\ChinaRiverPerennialStatus\\water_ratio_0.05_min_conn_10_perennial_10_perennial_ratio_0.50\\china_river_perennial_status_discharge_gt_50_connectivity_only.sqlite",
+    "river_geojson": "D:\\OneDrive\\UTokyo\\Research\\Workspace\\Output\\ChinaRiverPerennialStatus\\water_ratio_0.05_min_conn_10_perennial_10_perennial_ratio_0.50\\china_river_perennial_status_discharge_gt_50_connectivity_only.geojson",
+    "hydrorivers_gdb": "D:\\OneDrive\\UTokyo\\Research\\Workspace\\Data\\Google Earth Engine\\HydroRIVERS_v10_as.gdb\\HydroRIVERS_v10_as.gdb",
+    "search_km": 20.0,
+    "candidate_count": 3,
+    "ambiguity_km": 2.0,
+    "ambiguity_ratio": 1.25,
+    "max_topology_hops": 200,
+    "excluded_north_of_river_data": 2572,
+    "north_limit_degrees": 55.89999999999909,
+    "method": "point-to-line geodesic candidates; topology resolves close candidates; assignments are provisional"
+  },
+  "processed_points": 16169,
+  "with_candidate": 10626,
+  "without_candidate": 5543,
+  "status_counts": {
+    "candidate": 8353,
+    "no_candidate": 5543,
+    "ambiguous": 2168,
+    "topology_resolved": 105
+  },
+  "distance_km_quantiles": {
+    "0.5": 0.1742267023749962,
+    "0.9": 1.349306174107775,
+    "0.95": 4.694644987102607,
+    "0.99": 15.880101222627479
+  }
+}
